@@ -1,4 +1,5 @@
 plugins {
+    // This plugin requires Gradle 5.0 or above
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
 }
@@ -18,5 +19,8 @@ shadowJar {
 
 dependencies {
     shadow 'com.google.code.gson:gson:2.8.7'
+
+    // That's where JavaDocs' code is stored, so yeah, make sure you 
+    // use JDK instead of JRE on your Java Home
     implementation files("${System.properties['java.home']}/../lib/tools.jar")
 }

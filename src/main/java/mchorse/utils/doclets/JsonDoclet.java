@@ -20,6 +20,11 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Doclet that processes JavaDocs' data to one JSON file.
+ *
+ * Loosely based off this project: https://github.com/tantaman/jsonDoclet
+ */
 public class JsonDoclet
 {
     public static boolean start(RootDoc root)
