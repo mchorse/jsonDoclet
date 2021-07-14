@@ -1,0 +1,22 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'java'
+}
+
+group 'mchorse'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+}
+
+dependencies {
+    shadow 'com.google.code.gson:gson:2.8.7'
+    implementation files("${System.properties['java.home']}/../lib/tools.jar")
+}
