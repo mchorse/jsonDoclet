@@ -105,7 +105,7 @@ public class JsonDoclet
     {
         method.addProperty("name", methodDoc.name());
         method.addProperty("doc", methodDoc.commentText());
-        method.add("return", compileReturn(methodDoc));
+        method.add("returns", compileReturn(methodDoc));
         method.add("arguments", compileArguments(methodDoc));
     }
 
