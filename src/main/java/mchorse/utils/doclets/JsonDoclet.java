@@ -5,13 +5,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
+import com.sun.javadoc.AnnotationDesc;
 import com.sun.javadoc.ClassDoc;
 import com.sun.javadoc.MethodDoc;
 import com.sun.javadoc.PackageDoc;
 import com.sun.javadoc.Parameter;
 import com.sun.javadoc.RootDoc;
 import com.sun.javadoc.Tag;
+import com.sun.javadoc.Type;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -82,6 +85,26 @@ public class JsonDoclet
     {
         clazz.addProperty("name", classDoc.qualifiedTypeName());
         clazz.addProperty("doc", classDoc.commentText());
+
+        Type superclass = classDoc.superclassType();
+
+        if (superclass != null)
+        {
+            clazz.addProperty("superclass", superclass.qualifiedTypeName());
+        }
+
+        JsonArray array = new JsonArray();
+        Type[] interfaces = classDoc.interfaceTypes();
+
+        if (interfaces != null)
+        {
+            for (Type type : interfaces)
+            {
+                array.add(new JsonPrimitive(type.qualifiedTypeName()));
+            }
+        }
+
+        clazz.add("interfaces", array);
         clazz.add("methods", compileMethods(classDoc.methods()));
     }
 
@@ -107,6 +130,19 @@ public class JsonDoclet
         method.addProperty("doc", methodDoc.commentText());
         method.add("returns", compileReturn(methodDoc));
         method.add("arguments", compileArguments(methodDoc));
+        method.add("annotations", compileAnnotations(methodDoc));
+    }
+
+    private static JsonElement compileAnnotations(MethodDoc methodDoc)
+    {
+        JsonArray array = new JsonArray();
+
+        for (AnnotationDesc annotationDesc : methodDoc.annotations())
+        {
+            array.add(new JsonPrimitive(annotationDesc.annotationType().qualifiedTypeName()));
+        }
+
+        return array;
     }
 
     private static JsonElement compileReturn(MethodDoc methodDoc)
