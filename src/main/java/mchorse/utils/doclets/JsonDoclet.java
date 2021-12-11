@@ -185,12 +185,16 @@ public class JsonDoclet
         for (Tag tag : methodDoc.tags("param"))
         {
             String text = tag.text();
-
             int space = text.indexOf(' ');
-            String name = text.substring(0, space).trim();
-            String comment = text.substring(space).trim();
 
-            argumentTags.put(name, comment);
+            if (space >= 0)
+            {
+                argumentTags.put(text.substring(0, space), text.substring(space).trim());
+            }
+            else
+            {
+                argumentTags.put(text, "");
+            }
         }
 
         return argumentTags;
